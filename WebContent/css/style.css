@@ -1,0 +1,69 @@
+@CHARSET "ISO-8859-1";
+
+.mensagem{
+	width: 50%;
+	margin:auto;
+	height:50px;
+	background-color: pink;
+	border: 2px solid red;
+	color: black;
+	border-radius: 5px;
+	padding: 5px;
+}
+
+body, html {
+	margin:0px;
+	padding:0px;
+	font-family: 'Titillium Web', sans-serif;
+	font-size: 23px;
+	line-height: 42px;
+	font-weight: 100;
+	text-align:center;
+	height: 100%;
+}
+
+.sidebar {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+.fexar {
+	background-color: #111;
+	padding-top: 20px;
+}
+
+.sidebar a {
+  padding: 15px 15px 15px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidebar a:hover {
+  color: #f1f1f1;
+}
+
+.sidebar .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+.openbtn {
+  font-size: 20px;
+  cursor: pointer;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+}
