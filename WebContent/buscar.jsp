@@ -6,6 +6,16 @@
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
+
+<style>
+	#batata{
+	margin-left:100px;
+	text-align:left;
+	padding-left:70px;
+	}
+	
+	</style>
+	
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>JooJ's Pizzas</title>
@@ -45,7 +55,7 @@
 					class="table table-hover table-sm table-striped ">
 					<thead class="thead-dark">
 				    <tr>
-				      <th scope="col">Nome completo</th>
+				      <th  scope="col">Nome completo</th>
 				      <th scope="col">Endereço</th>
 				      <th scope="col">Ações</th>
 				    </tr>
@@ -58,8 +68,9 @@
 					for (Cliente c : cli) {				    
 				    %>
 				    <tr>
-				      <th scope="row"><%out.print(c.getNome());%></th>
-				      <td><%out.print(c.getBairro() + " ," + c.getLogradouro() +" ," + c.getNumero());%></td>
+				     <th scope="row" id="batata"><%out.print(c.getNome());%></th> </center>
+				     <td id="batata"><%out.print("Bairro"+" "+c.getBairro() + " ," + c.getLogradouro() +" ," +"Nº"+" "+c.getNumero());%></td>
+				      
 				      <td>
 				      </td>
 				    </tr>
@@ -113,5 +124,7 @@
 			window.open("nova-operadora.jsp");
 		}
 	</script>
+	
+	
 </body>
 </html>

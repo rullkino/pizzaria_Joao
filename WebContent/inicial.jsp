@@ -61,7 +61,21 @@
 		</div>
 	</div>
 	<div class="jumbotron text-center" style="margin-bottom: 0">
-		<p>Footer</p>
+			<%int i; %>
+			<%for(i=0;i<2;i++){%>		
+		<div class="card" style="width: 250px;">
+  <img class="card-img-top" src="..." alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title">Card title</h5>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <a href="#" class="btn btn-primary">Pedido Pronto</a>
+  </div>
+    </div>
+	<%} %>
+
+
+
+
 	</div>
 	<script src="js/jquery-3.3.1.min.js"></script>
 	<script src="js/scripts.js"></script>
