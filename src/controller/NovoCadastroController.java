@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.ClienteDAO;
-import dao.Mensagem;
+import dao.MensagemDao;
 import vo.Cliente;
 import vo.MensagemVO;
 
@@ -49,23 +49,15 @@ public class NovoCadastroController extends HttpServlet {
 		c.setComplemento(request.getParameter("complemento"));
 		c.setReferencia(request.getParameter("referencia"));
 		
-		System.out.print(c.getNome()+c.getBairro()+c.getLogradouro()+c.getNumero());
-		
-		
 		if(c.getNome().equals("")) {
-			MensagemVO m = new MensagemVO();
-			m.setAlerta("erro");
-			m.setMsg("Erro ao cadastrar");
+			MensagemDao.addMensagem(new MensagemVO("danger","Erro ao cadastrar"));
 		}else {
 			ClienteDAO cDao = new ClienteDAO();
 			
 			try {
 				if(cDao.cadastrarCliente(c)) {
-					MensagemVO m = new MensagemVO();
-					m.setAlerta("sucesso");
-					m.setMsg("Cadastro efetuado com sucesso");
-					Mensagem.addMensagem(m);
-					response.sendRedirect("inicial.jsp");
+					MensagemDao.addMensagem(new MensagemVO("sucess","Cadastro efetuado com sucess"));
+					response.sendRedirect(".jsp");
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block

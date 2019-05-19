@@ -1,7 +1,7 @@
 package vo;
 
+import java.sql.Date;
 import java.sql.Time;
-import java.util.Date;
 
 public class Pedido {
 	private Integer clienteID;//estrangeira
