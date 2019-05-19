@@ -5,7 +5,7 @@ import java.util.List;
 
 import vo.MensagemVO;
 
-public class Mensagem {
+public class MensagemDao {
 	
 	private static List<MensagemVO> mensagens = new ArrayList<>();
 	

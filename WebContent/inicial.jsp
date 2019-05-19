@@ -1,4 +1,8 @@
-<%@page import="dao.Mensagem"%>
+<%@page import="vo.Mensagem"%>
+<%@page import="dao.MensagemDao"%>
+<%@page import="vo.Pedido"%>
+<%@page import="java.util.List"%>
+<%@page import="dao.PedidoDAO"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -30,50 +34,36 @@
 			<ul class="navbar-nav">
 				<li class="nav-item"><a class="nav-link"
 					href="novo_cadastro.jsp">Novo Cadástro</a></li>
-				<li class="nav-item"><a class="nav-link" href="buscar.jsp">Buscar</a></li>
+				<li class="nav-item"><a class="nav-link" href="buscar.jsp">Clientes</a></li>
 				<li class="nav-item"><a class="nav-link" href="cardapio.jsp">Cardápio</a></li>
 			</ul>
 		</div>
 		</nav>
 		<div class="container " style="margin-top: 30px">
-
-
 			<%
-				if (!Mensagem.getMensagens().isEmpty()) {
+				if (!MensagemDao.getMensagens().isEmpty()) {
+					Mensagem m = new Mensagem(MensagemDao.getMensagem());
 			%>
-			<div class="mensagem" id="mensagem">
-				<%
-					while (!Mensagem.getMensagens().isEmpty()) {
-							out.println(Mensagem.getMensagem().getMsg());
-						}
-				%>
+			<div class="card text-white bg-<%=m.getAlerta()%> mb-3" id="mensagem"
+				style="max-width: 25rem; align: center">
+				<div class="card-body">
+					<h5 class="card-title">Erro</h5>
+					<p class="card-text"><%=m.getMsg()%></p>
+				</div>
+
 				<script>
 					setTimeout(() => {
 						$("#mensagem").toggle(250);
 					}, 4000);
 				</script>
 			</div>
-			<%
-				}
-			%>
-
-
 		</div>
+		<%
+			}
+		%>
+
 	</div>
 	<div class="jumbotron text-center" style="margin-bottom: 0">
-			<%int i; %>
-			<%for(i=0;i<2;i++){%>		
-		<div class="card" style="width: 250px;">
-  <img class="card-img-top" src="..." alt="Card image cap">
-  <div class="card-body">
-    <h5 class="card-title">Card title</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    <a href="#" class="btn btn-primary">Pedido Pronto</a>
-  </div>
-    </div>
-	<%} %>
-
-
 
 
 	</div>

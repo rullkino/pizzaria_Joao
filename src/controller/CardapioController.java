@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import dao.Mensagem;
+import dao.MensagemDao;
 import dao.PizzaDAO;
 import vo.MensagemVO;
 
@@ -45,20 +45,14 @@ public class CardapioController extends HttpServlet {
 			PizzaDAO pDao = new PizzaDAO();
 			try {
 				if(pDao.excluirPizza(pizzaID)) {
-					MensagemVO m = new MensagemVO();
-					m.setAlerta("sucesso");
-					m.setMsg("Pizza cadastrada com sucesso");
-					Mensagem.addMensagem(m);
+					MensagemDao.addMensagem(new MensagemVO("sucess","Pizza cadastrada com sucesso"));
 					response.sendRedirect("cardapio.jsp");
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				
-				MensagemVO m = new MensagemVO();
-				m.setAlerta("sucesso");
-				m.setMsg("Erro ao registrar Pizza");
-				Mensagem.addMensagem(m);
+				MensagemDao.addMensagem(new MensagemVO("danger","Erro ao cadastrar pizza"));
 				response.sendRedirect("cardapio.jsp");
 			}
 		}else {

@@ -1,4 +1,8 @@
-
+<%@page import="vo.Mensagem"%>
+<%@page import="dao.MensagemDao"%>
+<%@page import="vo.Pedido"%>
+<%@page import="java.util.List"%>
+<%@page import="dao.PedidoDAO"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -11,6 +15,7 @@
 
 </head>
 <body>
+<div class=" col-md-2"></div>
 	<div class="jumbotron jumbotron-fluid"
 		style="padding-top: 0px;  background-color: #c4ffd8;">
 		<img alt="Logo" src="img/pizza_slice.png" width="100%" />
@@ -30,54 +35,69 @@
 			</ul>
 		</div>
 		</nav>
-		<div class="container" style="padding-top: 50px;">
-			<span class="badge badge-pill badge-light" style="font-size: 50px;">Cadastro
-				de cliente</span> <br>
-			<hr>
-			<br>
-			<form action="NovoCadastroController" method="post">
+		<div class="container " style="margin-top: 30px">
+				<%
+			if (!MensagemDao.getMensagens().isEmpty()) {
+				Mensagem m = new Mensagem(MensagemDao.getMensagem());
+		%>
+		<div class="card text-white bg-<%=m.getAlerta()%> mb-3" id="mensagem"
+			style="max-width: 25rem; align:center">
+			<div class="card-body">
+				<h5 class="card-title">Erro</h5>
+				<p class="card-text"><%=m.getMsg()%></p>
+			</div>
 
-				<div class="form-row">
-					<div class="form-group col-md-12" style="text-align: left;">
-						<label for="inputName" style="padding-left: 30%;">Nome</label> <input
-							type="text" required class="form-control" name="nome"
-							placeholder="Nome">
-					</div>
-				</div>
-				<div class="form-row">
-					<div class="form-group col-md-8">
-						<label for="inputAddress">Logradouro</label> <input type="text"
-							required class="form-control" name="logradouro"
-							placeholder="Rua / Alameda / Avenida /etc...">
-					</div>
-					<div class="form-group col-md-4">
-						<label for="inputNumber">Número</label> <input type="number"
-							class="form-control" name="numero" min="0">
-					</div>
-				</div>
-				<div class="form-row">
-					<div class="form-group col-md-8">
-						<label for="inputComplement">Complemento</label><input type="text"
-							class="form-control" name="complemento"
-							placeholder="Apto. / Lado A">
-					</div>
-					<div class="form-group col-md-4">
-						<label for="inputBairro">Bairro</label> <input type="text"
-							class="form-control" name="bairro">
-					</div>
-				</div>
-				<div class="form-row">
-					<div class="form-group col-md-12">
-						<label for="input">Referência</label> <input type="text"
-							class="form-control" name="referencia"
-							placeholder="Ao lado da padaria ....">
-					</div>
-				</div>
-				<button type="submit" class="btn btn-primary">Cadastrar</button>
-
-			</form>
+			<script>
+					setTimeout(() => {
+						$("#mensagem").toggle(250);
+					}, 4000);
+				</script>
+		</div>
+	</div>
+	<%
+		}
+	%>
 
 		</div>
+	</div>
+	<div class="jumbotron text-center" style="margin-bottom: 0">
+		
+		<table class="table table-hover table-dark">
+		
+			<%
+			if (request.getSession().getAttribute("usuarioID") != null) {
+				PedidoDAO pDao = new PedidoDAO();	
+					List<Pedido> pedidos;
+					pedidos = pDao.listarPedidos(Integer.valueOf(request.getSession().getAttribute("clienteID").toString()));
+				%>
+	<tr>
+		
+	<td>Cliente</td>
+	<td>Data</td>
+	<td>Hora</td>
+	<td>Valor</td>
+	<tr/>
+	
+	<% for(Pedido p:pedidos){ 
+	
+	int i; %>
+	<tr>
+	<td data-toggle="collapse" href="#collapseExample"><%=p.getClienteID() %></td>
+	<td><%=p.getData() %></td>
+	<td><%=p.getHora() %></td>
+	<td><%=p.getTotal() %></td>
+	<td><button type="button" class="btn btn-success">Exibir Pedido</button></td>
+	</tr>
+	
+	
+	<%    }
+	}%>
+
+  </div>
+  </div>
+	</table>
+		
+
 	</div>
 	<script src="js/jquery-3.3.1.min.js"></script>
 	<script src="js/scripts.js"></script>

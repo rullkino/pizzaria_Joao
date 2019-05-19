@@ -2,7 +2,6 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="vo.Pizza"%>
 <%@page import="java.util.List"%>
-<%@page import="dao.Mensagem"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -12,43 +11,44 @@
 <title>JooJ's Pizzas</title>
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet" href="css/style.css">
+  <style>
+  /* Note: Try to remove the following lines to see the effect of CSS positioning */
+  .affix {
+    top: 20px;
+  }
+  </style>
 
 </head>
 <body>
+	<div class="container-fluid" style="padding: 0px; margin: 0;">
+		<img alt="Logo" src="img/pizza_slice.png" width="100%" />
+	</div>
+	<nav class="navbar navbar-expand-sm bg-dark navbar-dark"
+		style="border-bottom: 6px solid #c92a1c;"> <a
+		class="navbar-brand" href="inicial.jsp">Início</a>
+	<button class="navbar-toggler" type="button" data-toggle="collapse"
+		data-target="#collapsibleNavbar">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+	<div class="collapse navbar-collapse" id="collapsibleNavbar" data-spy="affix" data-offset-top="205">
+		<ul class="navbar-nav">
+			<li class="nav-item"><a class="nav-link"
+				href="novo_cadastro.jsp">Novo Cadástro</a></li>
+			<li class="nav-item"><a class="nav-link" href="buscar.jsp">Clientes</a></li>
+			<li class="nav-item"><a class="nav-link" href="cardapio.jsp">Cardápio</a></li>
+		</ul>
+		<hr>
+
+		<input class="form-control col-md-2" id="myInput" type="search"
+			placeholder="Pesquisar" style="margin-right: 20px">
+		<button type="button" class="btn btn-outline-success"
+			data-toggle="modal" data-target="#novaPizzaModal">Nova Pizza</button>
+	</div>
+	</nav>
+
 	<div class="container col-md-12"
-		style="margin: 0; padding: 0; margin:0px">
-
-		<div class="jumbotron jumbotron-fluid"
-			style="padding: 0px; margin: 0;">
-			<img alt="Logo" src="img/pizza_slice.png" width="100%" />
-		</div>
-
-		<nav class="navbar navbar-expand-sm bg-dark navbar-dark"
-			style="border-bottom: 6px solid #c92a1c;"> <a
-			class="navbar-brand" href="inicial.jsp">Início</a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse"
-			data-target="#collapsibleNavbar">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="collapsibleNavbar">
-			<ul class="navbar-nav">
-				<li class="nav-item"><a class="nav-link"
-					href="novo_cadastro.jsp">Novo Cadástro</a></li>
-				<li class="nav-item"><a class="nav-link" href="buscar.jsp">Buscar</a></li>
-				<li class="nav-item"><a class="nav-link" href="cardapio.jsp">Cardápio</a></li>
-			</ul>
-			<hr>
-
-			<input class="form-control col-md-2" id="myInput" type="search"
-				placeholder="Pesquisar">
-			<hr>
-			<button type="button" class="btn btn-outline-success"
-				data-toggle="modal" data-target="#novaPizzaModal">Nova
-				Pizza</button>
-		</div>
-		</nav>
-
-
+		style="margin: 0; padding: 0; margin: 0px">
+		
 		<div class="modal fade" id="novaPizzaModal" tabindex="-1"
 			role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-lg" role="document">
@@ -62,43 +62,25 @@
 					</div>
 					<div class="modal-body modal-lg">
 						<form action="NovoCadastroController" method="post">
-
 							<div class="form-row">
 								<div class="form-group col-md-12" style="text-align: left;">
-									<label for="inputName" style="padding-left: 30%;">Nome</label>
-									<input type="text" required class="form-control" name="nome"
-										placeholder="Nome">
+									<label for="inputName" style="padding-left: 30%;">Nome
+										da pizza</label> <input type="text" required class="form-control"
+										name="nome" placeholder="Nome">
 								</div>
 							</div>
 							<div class="form-row">
 								<div class="form-group col-md-8">
-									<label for="inputAddress">Logradouro</label> <input type="text"
-										required class="form-control" name="logradouro"
-										placeholder="Rua / Alameda / Avenida /etc...">
+									<label for="inputText"></label>Descrição<input type="text"
+										required class="form-control" name="descricao">
 								</div>
 								<div class="form-group col-md-4">
-									<label for="inputNumber">Número</label> <input type="number"
-										class="form-control" name="numero" min="0">
+									<label for="inputDecimal">Preço</label><input type="number"
+										required min="0" value="0" step="any" class="form-control"
+										name="preco" min="0">
 								</div>
 							</div>
-							<div class="form-row">
-								<div class="form-group col-md-8">
-									<label for="inputComplement">Complemento</label><input
-										type="text" class="form-control" name="complemento"
-										placeholder="Apto. / Lado A">
-								</div>
-								<div class="form-group col-md-4">
-									<label for="inputBairro">Bairro</label> <input type="text"
-										class="form-control" name="bairro">
-								</div>
-							</div>
-							<div class="form-row">
-								<div class="form-group col-md-12">
-									<label for="input">Referência</label> <input type="text"
-										class="form-control" name="referencia"
-										placeholder="Ao lado da padaria ....">
-								</div>
-							</div>
+						</form>
 					</div>
 					<div class="modal-footer ">
 						<button type="button" class="btn btn-secondary"
@@ -116,10 +98,10 @@
 
 				<table id="dtVerticalScrollExample"
 					class="table table-hover table-sm table-striped ">
-					<thead class="thead-dark">
+					<thead class="thead-dark" data-spy="affix" data-offset-top="205">
 						<tr>
 							<th scope="col">ID</th>
-							<th scope="col">Nome</th>
+							<th scope="col" style="text-align: left; padding-left: 50px">Nome</th>
 							<th scope="col">Descrição</th>
 							<th scope="col">Preço</th>
 							<th scope="col"></th>
@@ -137,7 +119,7 @@
 						%>
 						<tr>
 							<td><%=p.getPizzaID()%></td>
-							<td><%=p.getNome()%></td>
+							<th style="text-align: left; padding-left: 50px"><%=p.getNome()%></th>
 							<td><%=p.getDescricao()%></td>
 							<td>R$ <%=p.getValor()%></td>
 							<td><input type="hidden" name="pizzaID" id="pizzaID" /> <input
@@ -150,8 +132,6 @@
 					</tbody>
 				</table>
 			</form>
-
-
 		</div>
 	</div>
 	<script src="js/jquery-3.3.1.min.js"></script>

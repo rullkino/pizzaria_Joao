@@ -1,16 +1,16 @@
 package vo;
 
-public class MensagemVO {
+public class Mensagem {
 	
 
 	private String msg;
-	private String alerta;
-	
-	public MensagemVO(String alerta, String msg) {
+	public Mensagem(MensagemVO m) {
 		super();
-		this.msg = msg;
-		this.alerta = alerta;
+		this.msg = m.getMsg();
+		this.alerta = m.getAlerta();
 	}
+
+	private String alerta;
 
 	public String getMsg() {
 		return msg;

@@ -32,7 +32,36 @@ public class ClienteDAO {
 		
 		return ps.executeUpdate() > 0;
 	}
-	
+	public Cliente buscarCliente(Integer id)  {
+		String sql = " SELECT * FROM cliente AS c INNER JOIN telefone AS t ON c.cliente_id = t.cliente_id WHERE c.cliente_id = ?; ";
+		
+		con = ConnectionDB.getConnection();
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
+			Cliente c = new Cliente();
+			List<String> tel = new ArrayList<>();
+			while(rs.next()) {
+				c.setId(rs.getInt("cliente_id"));
+				c.setNome(rs.getString("nome"));
+				c.setLogradouro(rs.getString("logradouro"));
+				c.setNumero(rs.getString("numero"));
+				c.setComplemento(rs.getString("complemento"));
+				c.setBairro(rs.getString("bairro"));
+				c.setReferencia(rs.getString("referencia"));
+				String telefone = rs.getString("telefone");
+				tel.add(telefone);	
+			}
+			c.setTelefones(tel);
+			return c;
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}	
+	}
 	
 	public List<Cliente> listarTodos() throws SQLException {
 		

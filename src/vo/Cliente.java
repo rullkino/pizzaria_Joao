@@ -1,5 +1,7 @@
 package vo;
 
+import java.util.List;
+
 public class Cliente {
 	private Integer id;
 	private String nome = "";
@@ -8,6 +10,7 @@ public class Cliente {
 	private String complemento = "";
 	private String bairro = "";
 	private String referencia = "";
+	private List<String> telefones;
 	
 	public Integer getId() {
 		return id;
@@ -50,5 +53,11 @@ public class Cliente {
 	}
 	public void setReferencia(String referencia) {
 		this.referencia = referencia;
+	}
+	public List<String> getTelefones() {
+		return telefones;
+	}
+	public void setTelefones(List<String> telefones) {
+		this.telefones = telefones;
 	}
 }
