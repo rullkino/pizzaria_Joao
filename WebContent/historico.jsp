@@ -156,13 +156,13 @@
 													Double desconto = (i.getValor() * i.getQuantidade()) - precoPizzas;
 								%>
 								<p>
-									<b style="font-weight: bold"><%=pizza.getNome()%></b>&nbsp;&nbsp;-&nbsp;&nbsp;Qtde:<%=i.getQuantidade()%>&nbsp;&nbsp;&nbsp;R$<%
+									<b style="font-weight: bold"><%=pizza.getNome()%></b>&nbsp;&nbsp;-&nbsp;&nbsp;Qtde: <%=i.getQuantidade()%>&nbsp;&nbsp;&nbsp;R$<%
 										out.print(format.format(precoPizzas));
 									%>&nbsp;&nbsp;&nbsp;<b style="font-weight: bold; color: red">R$<%
 										out.print(format.format(desconto));
 									%>(desconto)
 									</b><br> <b style="font-weight: bold; color: #079e00">Valor:
-										R$<%=i.getValor()%></b>
+										R$<%out.print(format.format(precoPizzas));%></b>
 								</p>
 								<%
 									}
