@@ -162,8 +162,9 @@
 										out.print(format.format(desconto));
 									%>(desconto)
 									</b><br> <b style="font-weight: bold; color: #079e00">Valor:
-										R$<%=i.getValor()%></b>
+										R$<%out.print(format.format(precoPizzas));%></b>
 								</p>
+								<hr>
 								<%
 									}
 								%>
