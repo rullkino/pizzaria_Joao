@@ -29,7 +29,7 @@ public class PizzaDAO {
 		String sql = " SELECT * FROM pizza ORDER BY nome ";
 		con = ConnectionDB.getConnection();
 		ps = con.prepareStatement(sql);
-		ResultSet rs = ps.executeQuery(sql);
+		ResultSet rs = ps.executeQuery();
 		List<Pizza>pizza = new ArrayList<Pizza>();
 		while(rs.next()) {
 			Pizza p = new Pizza();
@@ -43,22 +43,22 @@ public class PizzaDAO {
 		
 	}
 	
-	public List<Pizza> buscarPizza(String nome) throws SQLException {
+	public Pizza buscarPizza(Integer id) throws SQLException {
 		
-		String sql = " SELECT * FROM pizza WHERE nome LIKE '%?%'; " ;
+		String sql = " SELECT * FROM pizza WHERE pizza_id = ?; " ;
 		con = ConnectionDB.getConnection();
 		ps = con.prepareStatement(sql);
-		ResultSet rs = ps.executeQuery(sql);
-		List<Pizza>pizza = new ArrayList<Pizza>();
-		while(rs.next()) {
-			Pizza p = new Pizza();
+		ps.setInt(1, id);
+		ResultSet rs = ps.executeQuery();
+		Pizza p = new Pizza();
+		if(rs.next()) {
 			p.setPizzaID(rs.getInt("pizza_id"));
 			p.setNome(rs.getString("nome"));
 			p.setDescricao(rs.getString("descricao"));
 			p.setValor(rs.getDouble("valor"));
-			pizza.add(p);
-		}
-		return pizza;
+			return p;
+		}else
+			return null;
 	}
 	
 	public boolean excluirPizza(int pizzaID) throws SQLException{

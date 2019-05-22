@@ -4,28 +4,18 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-
-import org.apache.tomcat.jni.Time;
 
 import vo.Pedido;
 
+
 public class PedidoDAO {
-	
 	
 	Connection con;
 	PreparedStatement ps;
 	public List<Pedido>listarPedidos(Integer id) throws SQLException{
-		String sql = "SELECT  FROM pedido WHERE cliente_id = ? ORDER BY pedido_id";
+		String sql = "SELECT * FROM pedido WHERE cliente_id = ? ORDER BY pedido_id";
 		con = ConnectionDB.getConnection();
 		ps = con.prepareStatement(sql);
 		ps.setInt(1, id);

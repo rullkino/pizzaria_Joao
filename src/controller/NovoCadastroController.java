@@ -49,15 +49,16 @@ public class NovoCadastroController extends HttpServlet {
 		c.setComplemento(request.getParameter("complemento"));
 		c.setReferencia(request.getParameter("referencia"));
 		
-		if(c.getNome().equals("")) {
+		if(c.getNome().equals("") || c.getBairro().equals("") || c.getLogradouro().equals("")) {
 			MensagemDao.addMensagem(new MensagemVO("danger","Erro ao cadastrar"));
+			response.sendRedirect("novo_cadastro.jsp");
 		}else {
 			ClienteDAO cDao = new ClienteDAO();
 			
 			try {
 				if(cDao.cadastrarCliente(c)) {
 					MensagemDao.addMensagem(new MensagemVO("sucess","Cadastro efetuado com sucess"));
-					response.sendRedirect(".jsp");
+					response.sendRedirect("inicial.jsp");
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block

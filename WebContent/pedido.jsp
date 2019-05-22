@@ -1,5 +1,13 @@
-<%@page import="vo.Mensagem"%>
+<%@page import="dao.ItemPedidoDAO"%>
+<%@page import="vo.ItemPedido"%>
+<%@page import="jdk.nashorn.internal.runtime.ListAdapter"%>
+<%@page import="javax.swing.text.MaskFormatter"%>
+<%@page import="dao.ClienteDAO"%>
+<%@page import="vo.Cliente"%>
 <%@page import="dao.MensagemDao"%>
+<%@page import="vo.Mensagem"%>
+<%@page import="vo.MensagemVO"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="vo.Pedido"%>
 <%@page import="java.util.List"%>
 <%@page import="dao.PedidoDAO"%>
@@ -15,11 +23,15 @@
 
 </head>
 <body>
-<div class=" col-md-2"></div>
-	<div class="jumbotron jumbotron-fluid"
-		style="padding-top: 0px;  background-color: #c4ffd8;">
-		<img alt="Logo" src="img/pizza_slice.png" width="100%" />
-		<nav class="navbar navbar-expand-sm bg-dark navbar-dark"
+	<div class="container col-md-12"
+		style="margin: 0; padding: 0; margin-top: 85px">
+
+		<div class="jumbotron jumbotron-fluid"
+			style="padding: 0px; margin: 0;">
+			<img alt="Logo" src="img/pizza_slice.png" width="100%" />
+		</div>
+
+		<nav class="navbar fixed-top navbar-expand-sm bg-dark navbar-dark"
 			style="border-bottom: 6px solid #c92a1c;"> <a
 			class="navbar-brand" href="inicial.jsp">Início</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -30,18 +42,20 @@
 			<ul class="navbar-nav">
 				<li class="nav-item"><a class="nav-link"
 					href="novo_cadastro.jsp">Novo Cadástro</a></li>
-				<li class="nav-item"><a class="nav-link" href="buscar.jsp">Buscar</a></li>
+				<li class="nav-item"><a class="nav-link" href="buscar.jsp">Clientes</a></li>
 				<li class="nav-item"><a class="nav-link" href="cardapio.jsp">Cardápio</a></li>
 			</ul>
 		</div>
 		</nav>
-		<div class="container " style="margin-top: 30px">
-				<%
+		<%
+			if (request.getSession().getAttribute("usuarioID") == null) {
+				MensagemDao.addMensagem((new MensagemVO("danger", "Pagina bloqueada")));
+			}
 			if (!MensagemDao.getMensagens().isEmpty()) {
 				Mensagem m = new Mensagem(MensagemDao.getMensagem());
 		%>
 		<div class="card text-white bg-<%=m.getAlerta()%> mb-3" id="mensagem"
-			style="max-width: 25rem; align:center">
+			style="max-width: 25rem; align: center">
 			<div class="card-body">
 				<h5 class="card-title">Erro</h5>
 				<p class="card-text"><%=m.getMsg()%></p>
@@ -57,50 +71,95 @@
 	<%
 		}
 	%>
+	<%
+		if (request.getSession().getAttribute("usuarioID") != null) {
+			Integer codCliente = Integer.valueOf(request.getSession().getAttribute("usuarioID").toString());
+			ClienteDAO cDao = new ClienteDAO();
+			PedidoDAO pDao = new PedidoDAO();
+			ItemPedidoDAO iDao = new ItemPedidoDAO();
+			Cliente cliente = cDao.buscarCliente(codCliente);
+			List<Pedido> pedidos;
+			List<ItemPedido> itens;
+			pedidos = pDao.listarPedidos(codCliente);
+			SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat hf = new SimpleDateFormat("hh:mm a");
+	%>
 
+	<div class="row" style="border-top: 6px solid #c92a1c;">
+		<div class="jumbotron-fluid col-sm-3"
+			style="margin-bottom: 0px; padding: 2%; background-color: #baddba; text-align: left; font-size: 90%">
+			<h3 style="font-weight: bold; color: #6d0606">
+				Cliente nº
+				<%=cliente.getId()%>
+			</h3>
+			<h5 style="font-weight: bold"><%=cliente.getNome()%></h5>
+			<hr>
+			<p class="lead">
+			<h5 style="font-weight: bold; color: #6d0606">Informações do
+				cliente</h5>
+			<hr class="my-4">
+			<h5 style="color: #6d0606">Endereço</h5>
+			&nbsp;&nbsp;&nbsp;&nbsp;<%=cliente.getLogradouro()%><br>
+			&nbsp;&nbsp;&nbsp;&nbsp;<strong style="font-weight: bold">nº:</strong><%=cliente.getNumero()%><br>
+			&nbsp;&nbsp;&nbsp;&nbsp;<strong style="font-weight: bold">Complemento:</strong><%=cliente.getComplemento()%><br>
+			&nbsp;&nbsp;&nbsp;&nbsp;<strong style="font-weight: bold">Bairro:</strong><%=cliente.getBairro()%><br>
+			&nbsp;&nbsp;&nbsp;&nbsp;<strong style="font-weight: bold">Referência:</strong><%=cliente.getReferencia()%><hr class="my-4">
+			<h5 style="color: #6d0606">Telefones:</h5>
+			<%
+				MaskFormatter formatar = new MaskFormatter();
+
+					for (String tel : cliente.getTelefones()) {
+						out.print("&nbsp;&nbsp;&nbsp;&nbsp;" + "(" + tel.substring(0, 2) + ")"
+								+ tel.substring(2, (tel.length() - 4)) + "-"
+								+ tel.substring((tel.length() - 4), tel.length()));
+			%><br>
+			<%
+				}
+			%>
+			</p>
+			<hr class="my-4">
+			<a class="btn btn-warning btn-lg" style="font-color: #000000;"
+				href="#" role="button">Novo Pedido</a>
+		</div>
+		<div class="containner col-sm-9">
+			<div class="row" style="margin: 0; background-color: #d8ffd8;">
+				<%
+					for (Pedido p : pedidos) {
+						itens = iDao.listarTodods(p.getPedidoID());
+				%>
+
+				<div class="card border-success mb-3 "
+					style="width: 19rem; margin: 15px;">
+					<div class="card-header bg-transparent">
+						Pedido
+						<%=p.getClienteID()%></div>
+					<div class="card-body">
+						<h5 class="card-title"></h5>
+						<p class="card-text"></p>
+						
+						<p class="card-text">
+							<small class="text-muted">Pedido realizado em <%
+								out.print(df.format(p.getData()));
+							%> <br> as <%=hf.format(p.getHora())%></small>
+						</p>
+					</div>
+					<div class="card-footer bg-transparent">
+						<button type="button" class="btn btn-success">Exibir
+							Pedido</button>
+					</div>
+				</div>
+
+
+				<%
+					}
+				%>
+			</div>
 		</div>
 	</div>
-	<div class="jumbotron text-center" style="margin-bottom: 0">
-		
-		<table class="table table-hover table-dark">
-		
-			<%
-			if (request.getSession().getAttribute("usuarioID") != null) {
-				PedidoDAO pDao = new PedidoDAO();	
-					List<Pedido> pedidos;
-					pedidos = pDao.listarPedidos(Integer.valueOf(request.getSession().getAttribute("clienteID").toString()));
-				%>
-	<tr>
-		
-	<td>Cliente</td>
-	<td>Data</td>
-	<td>Hora</td>
-	<td>Valor</td>
-	<tr/>
-	
-	<% for(Pedido p:pedidos){ 
-	
-	int i; %>
-	<tr>
-	<td data-toggle="collapse" href="#collapseExample"><%=p.getClienteID() %></td>
-	<td><%=p.getData() %></td>
-	<td><%=p.getHora() %></td>
-	<td><%=p.getTotal() %></td>
-	<td><button type="button" class="btn btn-success">Exibir Pedido</button></td>
-	</tr>
-	
-	
-	<%    }
-	}%>
-
-  </div>
-  </div>
-	</table>
-		
-
-	</div>
+	<%
+		}
+	%>
 	<script src="js/jquery-3.3.1.min.js"></script>
-	<script src="js/scripts.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script>
 		function excluir(codContato) {

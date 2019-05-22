@@ -1,3 +1,9 @@
+<%@page import="dao.PizzaDAO"%>
+<%@page import="vo.Pizza"%>
+<%@page import="java.text.DecimalFormat"%>
+<%@page import="java.text.NumberFormat"%>
+<%@page import="dao.ItemPedidoDAO"%>
+<%@page import="vo.ItemPedido"%>
 <%@page import="javax.swing.text.MaskFormatter"%>
 <%@page import="dao.ClienteDAO"%>
 <%@page import="vo.Cliente"%>
@@ -73,8 +79,11 @@
 			Integer codCliente = Integer.valueOf(request.getSession().getAttribute("usuarioID").toString());
 			ClienteDAO cDao = new ClienteDAO();
 			PedidoDAO pDao = new PedidoDAO();
+			PizzaDAO pzDao = new PizzaDAO();
+			ItemPedidoDAO iDao = new ItemPedidoDAO();
 			Cliente cliente = cDao.buscarCliente(codCliente);
 			List<Pedido> pedidos;
+
 			pedidos = pDao.listarPedidos(codCliente);
 			SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 			SimpleDateFormat hf = new SimpleDateFormat("hh:mm a");
@@ -98,7 +107,8 @@
 			&nbsp;&nbsp;&nbsp;&nbsp;<strong style="font-weight: bold">nº:</strong><%=cliente.getNumero()%><br>
 			&nbsp;&nbsp;&nbsp;&nbsp;<strong style="font-weight: bold">Complemento:</strong><%=cliente.getComplemento()%><br>
 			&nbsp;&nbsp;&nbsp;&nbsp;<strong style="font-weight: bold">Bairro:</strong><%=cliente.getBairro()%><br>
-			&nbsp;&nbsp;&nbsp;&nbsp;<strong style="font-weight: bold">Referência:</strong><%=cliente.getReferencia()%><hr class="my-4">
+			&nbsp;&nbsp;&nbsp;&nbsp;<strong style="font-weight: bold">Referência:</strong><%=cliente.getReferencia()%><hr
+				class="my-4">
 			<h5 style="color: #6d0606">Telefones:</h5>
 			<%
 				MaskFormatter formatar = new MaskFormatter();
@@ -119,17 +129,64 @@
 		<div class="containner col-sm-9">
 			<div class="row" style="margin: 0; background-color: #d8ffd8;">
 				<%
-					for (Pedido p : pedidos) {
+					DecimalFormat format = new DecimalFormat("###,##0.00");
+						if (!pedidos.isEmpty()) {
+							for (Pedido p : pedidos) {
+								List<ItemPedido> itens = iDao.listarTodods(p.getPedidoID());
 				%>
+				<div class="modal fade" id="exampleModal" tabindex="-1"
+					role="dialog" aria-labelledby="exampleModalScrollableTitle"
+					aria-hidden="true">
+					<div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalScrollableTitle">Detalhes
+									do pedido</h5>
+								<button type="button" class="close" data-dismiss="modal"
+									aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body" style="text-align: left">
+								<%
+									for (ItemPedido i : itens) {
 
+													Pizza pizza = pzDao.buscarPizza(i.getPizzaID());
+													Double precoPizzas = pizza.getValor() * i.getQuantidade();
+													Double desconto = (i.getValor() * i.getQuantidade()) - precoPizzas;
+								%>
+								<p>
+									<b style="font-weight: bold"><%=pizza.getNome()%></b>&nbsp;&nbsp;-&nbsp;&nbsp;Qtde:<%=i.getQuantidade()%>&nbsp;&nbsp;&nbsp;R$<%
+										out.print(format.format(precoPizzas));
+									%>&nbsp;&nbsp;&nbsp;<b style="font-weight: bold; color: red">R$<%
+										out.print(format.format(desconto));
+									%>(desconto)
+									</b><br> <b style="font-weight: bold; color: #079e00">Valor:
+										R$<%=i.getValor()%></b>
+								</p>
+								<%
+									}
+								%>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary"
+									data-dismiss="modal">Fechar</button>
+							</div>
+						</div>
+					</div>
+				</div>
 				<div class="card border-success mb-3 "
 					style="width: 19rem; margin: 15px;">
 					<div class="card-header bg-transparent">
 						Pedido
-						<%=p.getClienteID()%></div>
+						<%=p.getPedidoID()%></div>
 					<div class="card-body">
 						<h5 class="card-title"></h5>
-						<p class="card-text"></p>
+						<p class="card-text">
+							Pizzas:
+							<%=itens.size()%><br> Total:
+							<%=format.format(p.getTotal())%>
+						</p>
 						<p class="card-text">
 							<small class="text-muted">Pedido realizado em <%
 								out.print(df.format(p.getData()));
@@ -137,18 +194,35 @@
 						</p>
 					</div>
 					<div class="card-footer bg-transparent">
-						<button type="button" class="btn btn-success">Exibir
-							Pedido</button>
+						<button type="button" class="btn btn-success" data-toggle="modal"
+							data-target="#exampleModal">Exibir Pedido</button>
 					</div>
 				</div>
 
 
 				<%
 					}
+						} else {
+				%>
+				<div class="jumbotron jumbotron-fluid"
+					style="margin: 25%; margin-top: 10px; margin-bottom: 10px; background-color: #d8ffd8;">
+					<div class="container">
+						<h2 class="display">Este cliente ainda não possui pedidos!</h2>
+						<p class="lead">
+							<a href="pedido.jsp">Clique aqui para fazer o primeiro
+								pedido.</a>
+						</p>
+					</div>
+				</div>
+				<%
+					}
 				%>
 			</div>
 		</div>
 	</div>
+
+
+
 	<%
 		}
 	%>
