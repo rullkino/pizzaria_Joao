@@ -4,13 +4,14 @@ public class Mensagem {
 	
 
 	private String msg;
+	private String alerta;
 	public Mensagem(MensagemVO m) {
 		super();
 		this.msg = m.getMsg();
 		this.alerta = m.getAlerta();
 	}
 
-	private String alerta;
+	
 
 	public String getMsg() {
 		return msg;
