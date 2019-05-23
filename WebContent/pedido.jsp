@@ -1,3 +1,5 @@
+<%@page import="vo.Pizza"%>
+<%@page import="dao.PizzaDAO"%>
 <%@page import="dao.ItemPedidoDAO"%>
 <%@page import="vo.ItemPedido"%>
 <%@page import="jdk.nashorn.internal.runtime.ListAdapter"%>
@@ -20,6 +22,11 @@
 <title>JooJ's Pizzas</title>
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet" href="css/style.css">
+<style>
+.lista {
+	border: 1px solid red;
+}
+</style>
 
 </head>
 <body>
@@ -68,6 +75,20 @@
 				</script>
 		</div>
 	</div>
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
 	<%
 		}
 	%>
@@ -103,7 +124,8 @@
 			&nbsp;&nbsp;&nbsp;&nbsp;<strong style="font-weight: bold">nº:</strong><%=cliente.getNumero()%><br>
 			&nbsp;&nbsp;&nbsp;&nbsp;<strong style="font-weight: bold">Complemento:</strong><%=cliente.getComplemento()%><br>
 			&nbsp;&nbsp;&nbsp;&nbsp;<strong style="font-weight: bold">Bairro:</strong><%=cliente.getBairro()%><br>
-			&nbsp;&nbsp;&nbsp;&nbsp;<strong style="font-weight: bold">Referência:</strong><%=cliente.getReferencia()%><hr class="my-4">
+			&nbsp;&nbsp;&nbsp;&nbsp;<strong style="font-weight: bold">Referência:</strong><%=cliente.getReferencia()%><hr
+				class="my-4">
 			<h5 style="color: #6d0606">Telefones:</h5>
 			<%
 				MaskFormatter formatar = new MaskFormatter();
@@ -118,50 +140,105 @@
 			%>
 			</p>
 			<hr class="my-4">
-			<a class="btn btn-warning btn-lg" style="font-color: #000000;"
-				href="#" role="button">Novo Pedido</a>
+			<button class="btn btn-warning btn-lg" style="font-color: #000000;"
+				 data-toggle="modal" data-target="#exampleModal">Novo Pedido</button>
+				 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
 		</div>
 		<div class="containner col-sm-9">
 			<div class="row" style="margin: 0; background-color: #d8ffd8;">
-				<%
-					for (Pedido p : pedidos) {
-						itens = iDao.listarTodods(p.getPedidoID());
-				%>
-
-				<div class="card border-success mb-3 "
-					style="width: 19rem; margin: 15px;">
-					<div class="card-header bg-transparent">
-						Pedido
-						<%=p.getClienteID()%></div>
-					<div class="card-body">
-						<h5 class="card-title"></h5>
-						<p class="card-text"></p>
-						
-						<p class="card-text">
-							<small class="text-muted">Pedido realizado em <%
-								out.print(df.format(p.getData()));
-							%> <br> as <%=hf.format(p.getHora())%></small>
-						</p>
-					</div>
-					<div class="card-footer bg-transparent">
-						<button type="button" class="btn btn-success">Exibir
-							Pedido</button>
-					</div>
-				</div>
 
 
-				<%
-					}
-				%>
+				<script>
+	var i = 1;
+    function escreve(){
+		var txt_pre_definido = document.getElementById('x').value;
+        var t= document.getElementById("texto").innerHTML += "<div class='lista' id='" +i+ "' onclick='apaga(" +i+ ")'>" + txt_pre_definido+"</div>";
+        i++;
+     }
+                   
+  function apaga(v){
+    t.pop(v);
+    document.getElementById(t).innerHTML="";
+    }
+</script>
+
+				<input type="text" id="x" /> <input type="button" value="OK"
+					onclick="escreve()" />
+
+				<div id="texto" onclick="apaga();"></div>
 			</div>
 		</div>
 	</div>
 	<%
 		}
 	%>
+	<div class="modal fade bd-example-modal-lg" id="exampleModal"
+		tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<table id="dtVerticalScrollExample"
+						class="table table-hover table-sm table-striped ">
+						<thead class="thead-dark" data-spy="affix" data-offset-top="205">
+							<tr>
+								<th scope="col">ID</th>
+								<th scope="col" style="text-align: left; padding-left: 50px">Nome</th>
+								<th scope="col">Descrição</th>
+								<th scope="col">Preço</th>
+								<th scope="col"></th>
+							</tr>
+						</thead>
+						<tbody id="myTable">
+							<%
+								PizzaDAO pDao = new PizzaDAO();
+									List<Pizza> lista = pDao.retornaCardapio();
+
+									if (lista.isEmpty()) {
+										out.print("<tr><td colspan=3>Não há contatos</td></tr>");
+									}
+									for (Pizza p : lista) {
+							%>
+							<tr>
+								<td><%=p.getPizzaID()%></td>
+								<th style="text-align: left; padding-left: 50px"><%=p.getNome()%></th>
+								<td><%=p.getDescricao()%></td>
+								<td>R$ <%=p.getValor()%></td>
+							</tr>
+							<%
+								}
+							%>
+						</tbody>
+					</table>
+
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary">Save changes</button>
+				</div>
+			</div>
+		</div>
+	</div>
 	<script src="js/jquery-3.3.1.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script>
+		function novoitem(){
+			var pizzaID = document.getElementById('x').value;
+			var pizzaNome = document.getElementById('x').value;
+			var quantidade = document.getElementById('x').value;
+			var valor = document.getElementById('x').value;
+			var t= document.getElementById("texto").innerHTML += "<div class='lista' id='" +i+ "' onclick='apaga(" +i+ ")'>" +pizzaID +"</div>";
+			i++;
+		}
 		function excluir(codContato) {
 			$("#codContato").val(codContato);
 			$("#acao-table").val("excluir");

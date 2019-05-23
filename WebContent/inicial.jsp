@@ -15,7 +15,7 @@
 
 </head>
 <body>
-	<div class="container col-md-12"
+<div class="container col-md-12"
 		style="margin: 0; padding: 0; margin-top: 85px">
 
 		<div class="jumbotron jumbotron-fluid"

@@ -23,28 +23,30 @@
 
 </head>
 <body>
-	<div class="container-fluid" style="padding: 0px; margin: 0;">
-		<img alt="Logo" src="img/pizza_slice.png" width="100%" />
-	</div>
-	<nav class="navbar navbar-expand-sm bg-dark navbar-dark"
-		style="border-bottom: 6px solid #c92a1c;"> <a
-		class="navbar-brand" href="inicial.jsp">Início</a>
-	<button class="navbar-toggler" type="button" data-toggle="collapse"
-		data-target="#collapsibleNavbar">
-		<span class="navbar-toggler-icon"></span>
-	</button>
-	<div class="collapse navbar-collapse" id="collapsibleNavbar">
-		<ul class="navbar-nav">
-			<li class="nav-item"><a class="nav-link"
-				href="novo_cadastro.jsp">Novo Cadástro</a></li>
-			<li class="nav-item"><a class="nav-link" href="buscar.jsp">Clientes</a></li>
-			<li class="nav-item"><a class="nav-link" href="cardapio.jsp">Cardápio</a></li>
-		</ul>
-		<hr>
-		<input class="form-control col-md-3" type="search" id="buscar"
-			placeholder="Buscar Cliente" aria-label="Search">
-	</div>
-	</nav>
+<div class="container col-md-12"
+		style="margin: 0; padding: 0; margin-top: 85px">
+
+		<div class="jumbotron jumbotron-fluid"
+			style="padding: 0px; margin: 0;">
+			<img alt="Logo" src="img/pizza_slice.png" width="100%" />
+		</div>
+
+		<nav class="navbar fixed-top navbar-expand-sm bg-dark navbar-dark"
+			style="border-bottom: 6px solid #c92a1c;"> <a
+			class="navbar-brand" href="inicial.jsp">Início</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse"
+			data-target="#collapsibleNavbar">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="collapsibleNavbar">
+			<ul class="navbar-nav">
+				<li class="nav-item"><a class="nav-link"
+					href="novo_cadastro.jsp">Novo Cadástro</a></li>
+				<li class="nav-item"><a class="nav-link" href="buscar.jsp">Clientes</a></li>
+				<li class="nav-item"><a class="nav-link" href="cardapio.jsp">Cardápio</a></li>
+			</ul>
+		</div>
+		</nav>
 	<%
 			if (!MensagemDao.getMensagens().isEmpty()) {
 				Mensagem m = new Mensagem(MensagemDao.getMensagem());
