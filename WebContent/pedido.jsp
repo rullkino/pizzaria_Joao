@@ -82,7 +82,7 @@
 
 
 
-	
+
 
 
 
@@ -141,8 +141,9 @@
 			</p>
 			<hr class="my-4">
 			<button class="btn btn-warning btn-lg" style="font-color: #000000;"
-				 data-toggle="modal" data-target="#exampleModal">Novo Pedido</button>
-				 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+				data-toggle="modal" data-target="#exampleModal">Novo Pedido</button>
+			<button type="button" class="btn btn-primary" data-toggle="modal"
+				data-target="#exampleModal">
 		</div>
 		<div class="containner col-sm-9">
 			<div class="row" style="margin: 0; background-color: #d8ffd8;">
@@ -178,47 +179,57 @@
 		<div class="modal-dialog modal-lg" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+					<h5 class="modal-title" id="exampleModalCenterTitle">Item
+						pedido nº 1</h5>
 					<button type="button" class="close" data-dismiss="modal"
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
 				<div class="modal-body">
-					<table id="dtVerticalScrollExample"
-						class="table table-hover table-sm table-striped ">
-						<thead class="thead-dark" data-spy="affix" data-offset-top="205">
-							<tr>
-								<th scope="col">ID</th>
-								<th scope="col" style="text-align: left; padding-left: 50px">Nome</th>
-								<th scope="col">Descrição</th>
-								<th scope="col">Preço</th>
-								<th scope="col"></th>
-							</tr>
-						</thead>
-						<tbody id="myTable">
-							<%
-								PizzaDAO pDao = new PizzaDAO();
+					<div class="form-row">
+						<div class="form-group col-md-3" style="text-align: left;">
+							<label for="inputName"
+								style="font-weight: bold; padding-top: 5px">Tipo Da
+								Pizza : </label> <select class="custom-select" id="inputGroupSelect01">
+								<option selected>selecione</option>
+								<%
+									PizzaDAO pDao = new PizzaDAO();
 									List<Pizza> lista = pDao.retornaCardapio();
-
 									if (lista.isEmpty()) {
-										out.print("<tr><td colspan=3>Não há contatos</td></tr>");
+										out.print("<option selected>Erro ao carregar as pizzas</option>");
 									}
 									for (Pizza p : lista) {
-							%>
-							<tr>
-								<td><%=p.getPizzaID()%></td>
-								<th style="text-align: left; padding-left: 50px"><%=p.getNome()%></th>
-								<td><%=p.getDescricao()%></td>
-								<td>R$ <%=p.getValor()%></td>
-							</tr>
-							<%
-								}
-							%>
-						</tbody>
-					</table>
+										out.print("<option value=" + p.getPizzaID() + ">" + p.getNome()+"</option>");
+									}
+								%>
+							</select>
+						</div>
+						<div class="form-group col-md-2" style="text-align: left;">
+							<label for="inputName"
+								style="font-weight: bold; padding-top: 5px">Quantidade: </label>
+								<input type="number" class="form-control col-md-6" name="quantidade" min="0" style="margin-left:10%">
+						</div>
+						<div class="form-group col-md-7" style="text-align: left;">
+						<label for="inputName" style="font-weight: bold; padding-top: 5px">Tipo
+							Da Pizza : </label>
+							<input type="number"
+							class="form-control" name="numero" min="0">
+						</div>
+						<div class="form-group col-md-6" style="text-align: left;">
+						<label for="inputName" style="font-weight: bold; padding-top: 5px">Tipo
+							Da Pizza : </label>
+							<input type="number"
+							class="form-control" name="numero" min="0">
+						</div>
+						<div class="form-group col-md-6" style="text-align: left;">
+						<label for="inputName" style="font-weight: bold; padding-top: 5px">Tipo
+							Da Pizza : </label>
+							<input type="number"
+							class="form-control" name="numero" min="0">
+						</div>
 
-
+					</div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
@@ -231,6 +242,29 @@
 	<script src="js/jquery-3.3.1.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script>
+	$(document)
+	.ready(
+			function() {
+				$("#buscar")
+						.on(
+								"keyup",
+								function() {
+									var value = $(this).val()
+											.toLowerCase();
+									$("#tabelaClientes tr")
+											.filter(
+													function() {
+														$(this)
+																.toggle(
+																		$(
+																				this)
+																				.text()
+																				.toLowerCase()
+																				.indexOf(
+																						value) > -1)
+													});
+								});
+			});
 		function novoitem(){
 			var pizzaID = document.getElementById('x').value;
 			var pizzaNome = document.getElementById('x').value;

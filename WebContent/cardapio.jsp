@@ -116,9 +116,10 @@
 								out.print("<tr><td colspan=3>Não há contatos</td></tr>");
 							}
 							for (Pizza p : lista) {
+								
 						%>
 						<tr>
-							<td><%=p.getPizzaID()%></td>
+							<td></td>
 							<th style="text-align: left; padding-left: 50px"><%=p.getNome()%></th>
 							<td><%=p.getDescricao()%></td>
 							<td>R$ <%=p.getValor()%></td>

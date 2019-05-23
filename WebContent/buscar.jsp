@@ -45,6 +45,9 @@
 				<li class="nav-item"><a class="nav-link" href="buscar.jsp">Clientes</a></li>
 				<li class="nav-item"><a class="nav-link" href="cardapio.jsp">Cardápio</a></li>
 			</ul>
+			<hr>
+				<input class="form-control col-md-2" type="search" id="buscar"
+					placeholder="Buscar Cliente" aria-label="Buscar Cliente">
 		</div>
 		</nav>
 	<%
