@@ -45,14 +45,14 @@ public class CardapioController extends HttpServlet {
 			PizzaDAO pDao = new PizzaDAO();
 			try {
 				if(pDao.excluirPizza(pizzaID)) {
-					MensagemDao.addMensagem(new MensagemVO("sucess","Pizza cadastrada com sucesso"));
+					MensagemDao.addMensagem(new MensagemVO("bg-success","Pizza cadastrada com sucesso"));
 					response.sendRedirect("cardapio.jsp");
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				
-				MensagemDao.addMensagem(new MensagemVO("danger","Erro ao cadastrar pizza"));
+				MensagemDao.addMensagem(new MensagemVO("bg-danger","Erro ao cadastrar pizza"));
 				response.sendRedirect("cardapio.jsp");
 			}
 		}else {

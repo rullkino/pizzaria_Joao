@@ -2,8 +2,8 @@ package vo;
 
 public class ItemPedido {
 	
-	private Integer pedidoId;//estrangeira
-	private Integer pizzaID;//estrangeira
+	private Integer pedidoId;
+	private Integer pizzaID;
 	private Integer quantidade;
 	private Double valor;
 	

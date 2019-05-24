@@ -32,12 +32,10 @@
 <body>
 	<div class="container col-md-12"
 		style="margin: 0; padding: 0; margin-top: 85px">
-
 		<div class="jumbotron jumbotron-fluid"
 			style="padding: 0px; margin: 0;">
 			<img alt="Logo" src="img/pizza_slice.png" width="100%" />
 		</div>
-
 		<nav class="navbar fixed-top navbar-expand-sm bg-dark navbar-dark"
 			style="border-bottom: 6px solid #c92a1c;"> <a
 			class="navbar-brand" href="inicial.jsp">Início</a>
@@ -54,6 +52,8 @@
 			</ul>
 		</div>
 		</nav>
+
+
 		<%
 			if (request.getSession().getAttribute("usuarioID") == null) {
 				MensagemDao.addMensagem((new MensagemVO("danger", "Pagina bloqueada")));
@@ -61,10 +61,10 @@
 			if (!MensagemDao.getMensagens().isEmpty()) {
 				Mensagem m = new Mensagem(MensagemDao.getMensagem());
 		%>
-		<div class="card text-white bg-<%=m.getAlerta()%> mb-3" id="mensagem"
-			style="max-width: 25rem; align: center">
+		<div class="card text-white <%=m.getAlerta()%> mb-3" id="mensagem"
+			style="max-width: 25rem; margin-left:35%">
 			<div class="card-body">
-				<h5 class="card-title">Erro</h5>
+				<h5 class="card-title"></h5>
 				<p class="card-text"><%=m.getMsg()%></p>
 			</div>
 
@@ -75,20 +75,6 @@
 				</script>
 		</div>
 	</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	<%
 		}
 	%>
@@ -105,204 +91,109 @@
 			SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 			SimpleDateFormat hf = new SimpleDateFormat("hh:mm a");
 	%>
-
-	<div class="row" style="border-top: 6px solid #c92a1c;">
-		<div class="jumbotron-fluid col-sm-3"
-			style="margin-bottom: 0px; padding: 2%; background-color: #baddba; text-align: left; font-size: 90%">
-			<h3 style="font-weight: bold; color: #6d0606">
-				Cliente nº
-				<%=cliente.getId()%>
-			</h3>
-			<h5 style="font-weight: bold"><%=cliente.getNome()%></h5>
-			<hr>
-			<p class="lead">
-			<h5 style="font-weight: bold; color: #6d0606">Informações do
-				cliente</h5>
-			<hr class="my-4">
-			<h5 style="color: #6d0606">Endereço</h5>
-			&nbsp;&nbsp;&nbsp;&nbsp;<%=cliente.getLogradouro()%><br>
-			&nbsp;&nbsp;&nbsp;&nbsp;<strong style="font-weight: bold">nº:</strong><%=cliente.getNumero()%><br>
-			&nbsp;&nbsp;&nbsp;&nbsp;<strong style="font-weight: bold">Complemento:</strong><%=cliente.getComplemento()%><br>
-			&nbsp;&nbsp;&nbsp;&nbsp;<strong style="font-weight: bold">Bairro:</strong><%=cliente.getBairro()%><br>
-			&nbsp;&nbsp;&nbsp;&nbsp;<strong style="font-weight: bold">Referência:</strong><%=cliente.getReferencia()%><hr
-				class="my-4">
-			<h5 style="color: #6d0606">Telefones:</h5>
-			<%
-				MaskFormatter formatar = new MaskFormatter();
-
-					for (String tel : cliente.getTelefones()) {
-						out.print("&nbsp;&nbsp;&nbsp;&nbsp;" + "(" + tel.substring(0, 2) + ")"
-								+ tel.substring(2, (tel.length() - 4)) + "-"
-								+ tel.substring((tel.length() - 4), tel.length()));
-			%><br>
-			<%
-				}
-			%>
-			</p>
-			<hr class="my-4">
-			<button class="btn btn-warning btn-lg" style="font-color: #000000;"
-				data-toggle="modal" data-target="#exampleModal">Novo Pedido</button>
-			<button type="button" class="btn btn-primary" data-toggle="modal"
-				data-target="#exampleModal">
-		</div>
-		<div class="containner col-sm-9">
-			<div class="row" style="margin: 0; background-color: #d8ffd8;">
+	<form method="post" action="PedidoController">
+		<div class="row" style="border-top: 6px solid #c92a1c;">
 
 
-				<script>
-	var i = 1;
-    function escreve(){
-		var txt_pre_definido = document.getElementById('x').value;
-        var t= document.getElementById("texto").innerHTML += "<div class='lista' id='" +i+ "' onclick='apaga(" +i+ ")'>" + txt_pre_definido+"</div>";
-        i++;
-     }
-                   
-  function apaga(v){
-    t.pop(v);
-    document.getElementById(t).innerHTML="";
-    }
-</script>
+			<div class="jumbotron-fluid col-sm-3"
+				style="margin-bottom: 0px; padding: 2%; background-color: #baddba; text-align: left; font-size: 90%">
+				<h3 style="font-weight: bold; color: #6d0606">
+					Cliente nº
+					<%=cliente.getId()%>
+				</h3>
+				<h5 style="font-weight: bold"><%=cliente.getNome()%></h5>
+				<hr>
+				<p class="lead">
+				<h5 style="font-weight: bold; color: #6d0606">Informações do
+					cliente</h5>
+				<hr class="my-4">
+				<h5 style="color: #6d0606">Endereço</h5>
+				&nbsp;&nbsp;&nbsp;&nbsp;<%=cliente.getLogradouro()%><br>
+				&nbsp;&nbsp;&nbsp;&nbsp;<strong style="font-weight: bold">nº:</strong><%=cliente.getNumero()%><br>
+				&nbsp;&nbsp;&nbsp;&nbsp;<strong style="font-weight: bold">Complemento:</strong><%=cliente.getComplemento()%><br>
+				&nbsp;&nbsp;&nbsp;&nbsp;<strong style="font-weight: bold">Bairro:</strong><%=cliente.getBairro()%><br>
+				&nbsp;&nbsp;&nbsp;&nbsp;<strong style="font-weight: bold">Referência:</strong><%=cliente.getReferencia()%><hr
+					class="my-4">
+				<h5 style="color: #6d0606">Telefones:</h5>
+				<%
+					MaskFormatter formatar = new MaskFormatter();
 
-				<input type="text" id="x" /> <input type="button" value="OK"
-					onclick="escreve()" />
+						for (String tel : cliente.getTelefones()) {
+							out.print("&nbsp;&nbsp;&nbsp;&nbsp;" + "(" + tel.substring(0, 2) + ")"
+									+ tel.substring(2, (tel.length() - 4)) + "-"
+									+ tel.substring((tel.length() - 4), tel.length()));
+				%><br>
+				<%
+					}
+				%>
+				<hr class="my-4">
+				<button class="btn btn-warning btn-lg" style="font-color: #000000;"
+					type="submit" onclick="EnviaPedido()">Novo Pedido</button>
+			</div>
+			<div class="containner col-sm-9">
+				<div class="row" style="margin: 0; background-color: #d8ffd8;">
 
-				<div id="texto" onclick="apaga();"></div>
+					<input type="hidden" name="acao" id="acao-pedido" /> <input
+						type="hidden" name="cliente" id="cliente-id" value="<%request.getSession().getAttribute("usuarioID").toString();%>"/>
+					<table class="table table-striped table-hover table-success"
+						style="margin: 0">
+						<thead>
+							<tr class="thead-dark">
+								<th scope="col" width="10%">Nº Pizza</th>
+								<th scope="col" width="15%">Nome</th>
+								<th scope="col" width="35%">Descrição</th>
+								<th scope="col" width="20%">Preço</th>
+								<th scope="col" width="10%">Qtde</th>
+							</tr>
+						</thead>
+						<tbody id="tpizza">
+							<%
+								PizzaDAO pDao2 = new PizzaDAO();
+									List<Pizza> listaPizza = pDao2.retornaCardapio();
+									if (listaPizza.isEmpty()) {
+										out.print("<tr><td colspan=4>Não há pizzas</td></tr>");
+									}
+									int i = 0;
+									for (Pizza l : listaPizza) {
+							%>
+							<tr>
+								<td><input type="text" name="codpizza" class="form-control"
+									value="<%out.print(l.getPizzaID());%>" readonly="readonly" /></td>
+								<td>
+									<%
+										out.print(l.getNome());
+									%>
+								</td>
+								<td>
+									<%
+										out.print(l.getDescricao());
+									%>
+								</td>
+								<td><input type="text" name="valor" class="form-control"
+									value="<%out.print(l.getValor());%>" /></td>
+								<td><input type="number" step="1" class="form-control"
+									value="0" name="quantidade" /></td>
+							</tr>
+							<%
+								}
+							%>
+						</tbody>
+					</table>
+
+
+				</div>
 			</div>
 		</div>
-	</div>
+	</form>
 	<%
 		}
 	%>
-	<div class="modal fade bd-example-modal-lg" id="exampleModal"
-		tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-		aria-hidden="true">
-		<div class="modal-dialog modal-lg" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalCenterTitle">Item
-						pedido nº 1</h5>
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<div class="form-row">
-						<div class="form-group col-md-3" style="text-align: left;">
-							<label for="inputName"
-								style="font-weight: bold; padding-top: 5px">Tipo Da
-								Pizza : </label> <select class="custom-select" id="inputGroupSelect01">
-								<option selected>selecione</option>
-								<%
-									PizzaDAO pDao = new PizzaDAO();
-									List<Pizza> lista = pDao.retornaCardapio();
-									if (lista.isEmpty()) {
-										out.print("<option selected>Erro ao carregar as pizzas</option>");
-									}
-									for (Pizza p : lista) {
-										out.print("<option value=" + p.getPizzaID() + ">" + p.getNome()+"</option>");
-									}
-								%>
-							</select>
-						</div>
-						<div class="form-group col-md-2" style="text-align: left;">
-							<label for="inputName"
-								style="font-weight: bold; padding-top: 5px">Quantidade: </label>
-								<input type="number" class="form-control col-md-6" name="quantidade" min="0" style="margin-left:10%">
-						</div>
-						<div class="form-group col-md-7" style="text-align: left;">
-						<label for="inputName" style="font-weight: bold; padding-top: 5px">Tipo
-							Da Pizza : </label>
-							<input type="number"
-							class="form-control" name="numero" min="0">
-						</div>
-						<div class="form-group col-md-6" style="text-align: left;">
-						<label for="inputName" style="font-weight: bold; padding-top: 5px">Tipo
-							Da Pizza : </label>
-							<input type="number"
-							class="form-control" name="numero" min="0">
-						</div>
-						<div class="form-group col-md-6" style="text-align: left;">
-						<label for="inputName" style="font-weight: bold; padding-top: 5px">Tipo
-							Da Pizza : </label>
-							<input type="number"
-							class="form-control" name="numero" min="0">
-						</div>
-
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary"
-						data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary">Save changes</button>
-				</div>
-			</div>
-		</div>
-	</div>
 	<script src="js/jquery-3.3.1.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script>
-	$(document)
-	.ready(
-			function() {
-				$("#buscar")
-						.on(
-								"keyup",
-								function() {
-									var value = $(this).val()
-											.toLowerCase();
-									$("#tabelaClientes tr")
-											.filter(
-													function() {
-														$(this)
-																.toggle(
-																		$(
-																				this)
-																				.text()
-																				.toLowerCase()
-																				.indexOf(
-																						value) > -1)
-													});
-								});
-			});
-		function novoitem(){
-			var pizzaID = document.getElementById('x').value;
-			var pizzaNome = document.getElementById('x').value;
-			var quantidade = document.getElementById('x').value;
-			var valor = document.getElementById('x').value;
-			var t= document.getElementById("texto").innerHTML += "<div class='lista' id='" +i+ "' onclick='apaga(" +i+ ")'>" +pizzaID +"</div>";
-			i++;
-		}
-		function excluir(codContato) {
-			$("#codContato").val(codContato);
-			$("#acao-table").val("excluir");
-		}
-
-		function cancelar() {
-			//limpa os campos
-			$("#codContatoEditar").val("");
-			$("#nome").val("");
-			$("#telefone").val("");
-			$('#operadoras').val("");
-
-			//retorna para o modo inserir
-			$('#codContatoEditar').val("inserir");
-		}
-		function editar(codContato, nome, telefone, operadora) {
-			$("#codContatoEditar").val(codContato);
-			$("#nome").val(nome);
-			$("#telefone").val(telefone);
-			$('#operadoras').val(operadora);
-
-			//outros meios de selecionar option no select
-			//document.getElementById('operadoras').options[operadora].selected = true;
-			//$('#operadoras option[value="' + operadora + '"]').attr({ selected : "selected" });
-
-			$('#acaoForm').val("editar");
-		}
-		function novaOperadora() {
-			window.open("nova-operadora.jsp");
-		}
+	function EnviaPedido(){
+		$("#acao-pedido").val("pedir");
+	}
 	</script>
 </body>
 </html>

@@ -32,7 +32,7 @@ public class PedidoDAO {
 		}
 		return pedidos;
 	}
-	public boolean novoPedido(Pedido p) throws SQLException {
+	public int novoPedido(Pedido p) throws SQLException {
 		String sql = " INSERT INTO pedido(cliente_id, data, hora, valor) VALUES(?,?,?,?); ";
 		
 		con = ConnectionDB.getConnection();
@@ -41,8 +41,11 @@ public class PedidoDAO {
 		ps.setDate(2, p.getData());
 		ps.setTime(3, p.getHora());
 		ps.setDouble(4, p.getTotal());
-		
-		return ps.executeUpdate() > 0;
+		ResultSet rs = ps.getGeneratedKeys();
+		if(rs.next())
+			return rs.getInt(1);
+		else
+			return 0;
 	
 	}
 }

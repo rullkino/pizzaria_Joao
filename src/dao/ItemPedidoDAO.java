@@ -14,14 +14,14 @@ public class ItemPedidoDAO {
 	Connection con;
 	PreparedStatement ps;
 
-	public boolean inseriPedido(List<ItemPedido> pedidos) throws SQLException {
+	public boolean inseriPedido(List<ItemPedido> pedidos, int codPedido) throws SQLException {
 
 		String sql = " INSERT INTO item_pedido VALUES(?,?,?,?)";
 		int index = 0;
 		con = ConnectionDB.getConnection();
 		ps = con.prepareStatement(sql);
 		for (ItemPedido i : pedidos) {
-			ps.setInt(1, i.getPedidoId());
+			ps.setInt(1, codPedido);
 			ps.setInt(2, i.getPizzaID());
 			ps.setInt(3, i.getQuantidade());
 			ps.setDouble(4, i.getValor());
